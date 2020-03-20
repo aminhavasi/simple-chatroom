@@ -5,6 +5,7 @@ const server = http.createServer(app);
 require('dotenv').config();
 app.use(express.json());
 app.post('/api/auth/register', (req, res) => {
+    console.log(req.body);
     res.status(200).send('hello');
 });
 server.listen(process.env.PORT, () => {
