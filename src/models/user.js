@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
+const config = require('./../config.json');
 const userSchema = new mongoose.Schema(
     {
         username: {
@@ -55,7 +56,22 @@ userSchema.pre('save', function(next) {
 userSchema.methods.genToken = function() {
     let user = this;
     let access = 'user';
-    let token = jwt.sign();
+    let token = jwt
+        .sign(
+            {
+                _id: user._id.toHexString(),
+                access
+            },
+            config.sec_key
+        )
+        .toString();
+    user.tokens.push({
+        access,
+        token
+    });
+    return user.save().then(() => {
+        return token;
+    });
 };
 
 const validate = user => {
