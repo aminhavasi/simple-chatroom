@@ -32,7 +32,8 @@ const userSchema = new mongoose.Schema(
                 access: {
                     type: String,
                     required: true
-                }
+                },
+                _id: false
             }
         ]
     },

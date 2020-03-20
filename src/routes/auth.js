@@ -29,7 +29,8 @@ router.post('/login', async (req, res) => {
 
     const result = await bcrypt.compare(req.body.password, user.password);
     if (!result) return res.status(400).send('email or password is wrong');
-    await user.genToken();
+    const token = await user.genToken();
+    res.send(token);
 });
 
 const loginValidator = user => {
