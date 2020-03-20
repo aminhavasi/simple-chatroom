@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema(
     {
         username: {
@@ -20,7 +21,19 @@ const userSchema = new mongoose.Schema(
             required: true,
             minlength: 8,
             maxlength: 1024
-        }
+        },
+        tokens: [
+            {
+                token: {
+                    type: String,
+                    required: true
+                },
+                access: {
+                    type: String,
+                    required: true
+                }
+            }
+        ]
     },
     { timestamps: true }
 );
@@ -38,6 +51,12 @@ userSchema.pre('save', function(next) {
         next();
     }
 });
+
+userSchema.methods.genToken = function() {
+    let user = this;
+    let access = 'user';
+    let token = jwt.sign();
+};
 
 const validate = user => {
     const validator = Joi.object({
