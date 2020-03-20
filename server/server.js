@@ -1,22 +1,12 @@
 const http = require('http');
 const express = require('express');
 const app = express();
-const socketIo = require('socket.io');
-const path = require('path');
 const server = http.createServer(app);
-//************************************************** */
-
-const publicPath = path.join(__dirname + '/../public');
 require('dotenv').config();
-app.use(express.static(publicPath));
-const io = socketIo(server);
-
-io.on('connection', socket => {
-    console.log('a new user just connected');
-    socket.on('disconnect', () => {
-        console.log('disconnect');
-    });
+app.use(express.json());
+app.post('/api/auth/register', (req, res) => {
+    res.status(200).send('hello');
 });
 server.listen(process.env.PORT, () => {
-    console.log('server is running on port 3000');
+    console.log(`server is running on port ${process.env.PORT}`);
 });
